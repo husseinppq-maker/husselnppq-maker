@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدردشة</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { margin: 0; padding: 0; background: #f0f2f5; font-family: Arial; }
+        .header { background: #007bff; color: white; padding: 15px; text-align: center; position: fixed; top: 0; width: 100%; }
+        .messages { margin: 80px 0 70px; padding: 10px; }
+        .message { margin: 10px 0; padding: 10px 15px; border-radius: 15px; max-width: 70%; word-wrap: break-word; }
+        .my-message { background: #007bff; color: white; margin-left: auto; text-align: left; }
+        .other-message { background: white; color: #333; border: 1px solid #ddd; }
+        .input-area { position: fixed; bottom: 0; width: 100%; background: white; padding: 10px; display: flex; }
+        #message-input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; margin-right: 10px; }
+        #send-button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h3 id="country-name">الدردشة</h3>
+    </div>
+    
+    <div class="messages" id="messages-container"></div>
+    
+    <div class="input-area">
+        <input type="text" id="message-input" placeholder="اكتب رسالتك...">
+        <button id="send-button" onclick="sendMessage()">إرسال</button>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const country = urlParams.get('country');
+        const userId = urlParams.get('user');
+        
+        const countryNames = {
+            'saudi': '🇸🇦 السعودية',
+            'egypt': '🇪🇬 مصر', 
+            'uae': '🇦🇪 الإمارات',
+            'qatar': '🇶🇦 قطر',
+            'kuwait': '🇰🇼 الكويت',
+            'jordan': '🇯🇴 الأردن'
+        };
+        
+        document.getElementById('country-name').textContent = 
+            `دردشة ${countryNames[country]}`;
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                addMessage(userId, message, true);
+                input.value = '';
+                
+                setTimeout(() => {
+                    const responses = [
+                        "مرحبا بالجميع!",
+                        "كيف الحال؟",
+                        "أهلاً وسهلاً",
+                        "شكراً على المشاركة"
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage('other-user', randomResponse, false);
+                }, 1000);
+            }
+        }
+        
+        function addMessage(sender, text, isMyMessage) {
+            const container = document.getElementById('messages-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isMyMessage ? 'message my-message' : 'message other-message';
+            messageDiv.textContent = text;
+            container.appendChild(messageDiv);
+            
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        addMessage('system', `مرحباً بك في دردشة ${countryNames[country]}!`, false);
+        addMessage('system', 'يمكنك البدء بالدردشة مع الأعضاء الآن', false);
+        
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
