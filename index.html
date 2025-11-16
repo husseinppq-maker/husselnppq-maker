@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدردشة العالمية</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .flags-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .flag-item {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .flag-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        .flag-item img {
+            width: 60px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .flag-item span {
+            display: block;
+            margin-top: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🌍 اختر دولتك</h2>
+        <div class="flags-grid">
+            <div class="flag-item" onclick="selectCountry('saudi')">
+                <img src="https://flagcdn.com/w80/sa.png" alt="السعودية">
+                <span>السعودية</span>
+            </div>
+            <div class="flag-item" onclick="selectCountry('egypt')">
+                <img src="https://flagcdn.com/w80/eg.png" alt="مصر">
+                <span>مصر</span>
+            </div>
+            <div class="flag-item" onclick="selectCountry('uae')">
+                <img src="https://flagcdn.com/w80/ae.png" alt="الإمارات">
+                <span>الإمارات</span>
+            </div>
+            <div class="flag-item" onclick="selectCountry('qatar')">
+                <img src="https://flagcdn.com/w80/qa.png" alt="قطر">
+                <span>قطر</span>
+            </div>
+            <div class="flag-item" onclick="selectCountry('kuwait')">
+                <img src="https://flagcdn.com/w80/kw.png" alt="الكويت">
+                <span>الكويت</span>
+            </div>
+    <div class="flag-item" onclick="selectCountry('jordan')">
+        <img src="https://flagcdn.com/w80/jo.png" alt="الأردن">
+        <span>الأردن</span>
+    </div>
+</div>
+
+<script>
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+
+    function selectCountry(country) {
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        window.location.href = `chat.html?country=${country}&user=${user?.id || 'guest'}`;
+    }
+</script>
+</body>
+</html>
